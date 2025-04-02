@@ -61,19 +61,23 @@ h1 {
     text-align: center;
 }
 
+.command-container {
+    display: flex;
+}
+
 .main-container {
     flex: 1;
-    background-color: darkorange;
+    width: 960px;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
-    gap: 0.5rem;
 }
 
 .grid-cell {
     flex-shrink: 0;
     flex-grow: 1;
     background-color: grey;
+    outline: 1px solid black;
 }
 
 footer {
