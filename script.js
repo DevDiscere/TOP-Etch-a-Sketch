@@ -17,6 +17,12 @@ const generateGridCells = function generateGridCells (cellHeight, cellWidth, gri
     }
 }
 
+const changeCellColor = function changeCellColor (event) {
+    const currentCell = event.target;
+
+    currentCell.style.backgroundColor = "blue";
+}
+
 const WIDTH = 45;
 const HEIGHT = WIDTH;
 const GAP = 8;
@@ -24,3 +30,12 @@ const mainContainer = document.querySelector(".main-container");
 
 calculateContainerWidth(mainContainer, WIDTH, GAP);
 generateGridCells(HEIGHT, WIDTH);
+
+const gridCells = document.querySelectorAll(".grid-cell");
+
+// Add hovering effect on each cell
+gridCells.forEach( (cell) => {
+    cell.addEventListener("mouseenter", (event) => {
+        changeCellColor(event);
+    });
+});
