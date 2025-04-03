@@ -71,12 +71,12 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
+    background-color: white;
 }
 
 .grid-cell {
     flex-shrink: 0;
     flex-grow: 1;
-    background-color: grey;
     outline: 1px solid black;
 }
 
