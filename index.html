@@ -4,15 +4,33 @@
         <meta charset="UTF-8">
         <title>Etch-a-Sketch</title>
         <link rel="stylesheet" href="./styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap" rel="stylesheet">
         <script src="./script.js" defer></script>
     </head>
     <body>
-        <h1>Etch-a-Sketch</h1>
-        <div class="command-container">
-            <button class="clean-button">Clean Sketchpad</button>
-            <button class="generate-button">Generate New Grid</button>
-        </div> 
-        <main class="main-container"></main>
+        <main class="main-container">
+            <aside class="control-container">
+                <h1>Etch-a-Sketch</h1>
+                <div class="command-container">
+                    <button class="clean-button">Clean Sketchpad</button>
+                    <button class="generate-button">Generate New Grid</button>
+                    <div>
+                        <input type="checkbox" id="enableOutline" value="disabled">
+                        <label for="enableOutline">Enable Grid Outline?</label>
+                    </div>             
+                </div>
+                <div class="instruction-container">
+                    <h3>Instructions</h3>
+                    <p>To draw in the sketchpad, hold a <strong><em>key</em></strong> and hover a cell.</p><br>
+                    <p>Hold the <strong><em>Shift key</em></strong> to progressively darken a cell.</p>
+                    <p>Hold the <strong><em>Ctrl key</em></strong> to give a random color to a cell.</p>
+                    <p>Hold the <strong><em>Alt key</em></strong> to erase the color of a cell.</p>
+                </div>
+            </aside>
+            <section class="grid-container"></section>
+        </main>
         <footer><p>Created by Dev Discere 2025</p></footer>
     </body>
 </html>

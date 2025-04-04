@@ -60,28 +60,39 @@ const giveCellsHoverEffect = function giveCellsHoverEffect () {
             }
 
             if (event.altKey) {
+                // Erase cell color
                 targetedCell.removeProperty("background-color");
             }
         });
     });
 }
 
-const generateGrid = function generateGrid (gridContainer, gridSize) {
+const generateGrid = function generateGrid (gridContainer, gridSize, isGridOutlined) {
     const containerWidth = Number(window.getComputedStyle(gridContainer).width.slice(0, -2));
     const gridDimension = gridSize * gridSize;
     const cellWidth = containerWidth / gridSize;
     const cellHeight = cellWidth;
+    let cellOutline;
 
     // Clear grid
     while (gridContainer.hasChildNodes()) {
         gridContainer.removeChild(gridContainer.firstChild);
     }
 
+    // Check if grid cell outline is enabled
+    if (isGridOutlined == "disabled") {
+        cellOutline = "none";
+    } else if (isGridOutlined == "enabled") {
+        cellOutline = "1px solid black";
+    }
+
+    // Generate grid cells
     for (let i = 0; i < gridDimension; i++) {
         const gridCell = document.createElement("div");
         
         gridCell.style.width = cellWidth + "px";
         gridCell.style.height = cellHeight + "px";
+        gridCell.style.outline = cellOutline;
         gridCell.classList.add("grid-cell");
 
         gridContainer.appendChild(gridCell);
@@ -90,50 +101,73 @@ const generateGrid = function generateGrid (gridContainer, gridSize) {
     giveCellsHoverEffect();
 }
 
-const getNewGridSize = function getNewGridSize () {
-    const maximumGridSize = 100;
-    let promptText = "Define a new grid size (16-100): ";
-    let newGridSize = 0;
-
-    while (true) {
-        const userInput = prompt(promptText, minimumGridSize);
-
-        newGridSize = Number(userInput);
-
-        if (!Number.isInteger(newGridSize)) {
-            promptText = `${newGridSize} is not an integer.\n\nDefine a new grid size (16-100): `;
-        } else if (newGridSize < minimumGridSize) {
-            promptText = `${newGridSize} is less than the minimum grid size of ${minimumGridSize}.\n\nDefine a new grid size (16-100): `;
-        } else if (newGridSize > maximumGridSize) {
-            promptText = `${newGridSize} is greater than the maximum grid size of ${maximumGridSize}.\n\nDefine a new grid size (16-100): `
-        } else {
-            break;
-        }   
-    }
-
-    return newGridSize;
-}
-
-const cleanGrid = function cleanGrid () {
-    const gridCells = document.querySelectorAll(".grid-cell");
-
-    gridCells.forEach( (cell) => {
-        cell.style.removeProperty("background-color");
-    });
-}
-
 const minimumGridSize = 16;
-const mainContainer = document.querySelector(".main-container");
+const gridContainer = document.querySelector(".grid-container");
 const cleanButton = document.querySelector(".clean-button");
 const generateButton = document.querySelector(".generate-button");
+const outlineCheckbox = document.querySelector("#enableOutline");
 
-generateGrid(mainContainer, minimumGridSize);
-
-generateButton.addEventListener("click", () => {
-    const newGridSize = getNewGridSize();
-    generateGrid(mainContainer, newGridSize);
-});
+generateGrid(gridContainer, minimumGridSize);
 
 cleanButton.addEventListener("click", () => {
+    const cleanGrid = function cleanGrid () {
+        const gridCells = document.querySelectorAll(".grid-cell");
+        
+        // Erase all cell color
+        gridCells.forEach( (cell) => {
+            cell.style.removeProperty("background-color");
+        });
+    }
+    
     cleanGrid();
+});
+
+generateButton.addEventListener("click", () => {
+    const getNewGridSize = function getNewGridSize () {
+        const maximumGridSize = 100;
+        let promptText = "Define a new grid size (16-100): ";
+        let newGridSize = 0;
+    
+        while (true) {
+            const userInput = prompt(promptText, minimumGridSize);
+    
+            newGridSize = Number(userInput);
+    
+            if (!Number.isInteger(newGridSize)) {
+                promptText = `${newGridSize} is not an integer.\n\nDefine a new grid size (16-100): `;
+            } else if (newGridSize < minimumGridSize) {
+                promptText = `${newGridSize} is less than the minimum grid size of ${minimumGridSize}.\n\nDefine a new grid size (16-100): `;
+            } else if (newGridSize > maximumGridSize) {
+                promptText = `${newGridSize} is greater than the maximum grid size of ${maximumGridSize}.\n\nDefine a new grid size (16-100): `
+            } else {
+                break;
+            }   
+        }
+    
+        return newGridSize;
+    }
+
+    const newGridSize = getNewGridSize();
+    const isOutlineEnabled = outlineCheckbox.value;
+
+    generateGrid(gridContainer, newGridSize, isOutlineEnabled);
+});
+
+outlineCheckbox.addEventListener("click", (event) => {
+    const checkbox = event.target;
+    const isOutlineEnabled = checkbox.value;
+    const gridCells = document.querySelectorAll(".grid-cell");
+    let cellOutline;
+
+    if (isOutlineEnabled == "disabled"){
+        checkbox.setAttribute("value", "enabled");
+        cellOutline = "1px solid black";
+    } else if (isOutlineEnabled == "enabled") {
+        checkbox.setAttribute("value", "disabled");
+        cellOutline = "none";
+    }
+
+    gridCells.forEach( (cell) => {
+        cell.style.outline = cellOutline;
+    })
 });
